@@ -7,7 +7,7 @@ class ApiController {
 
         axios.get(url)
         .then(response => {
-            res.status(200).json(response.data.articles)
+            res.status(200).json(response.data)
         })
         .catch(next)
     }
