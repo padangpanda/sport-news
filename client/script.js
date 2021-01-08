@@ -1,90 +1,88 @@
-const baseUrl = "http://localhost:3001"
-let newsList = []
-let countryCode = ''
-
+var baseUrl = 'http://localhost:3000'
 $(document).ready(function(){
-    let check = $('#country').val()
-    if(!check){
-        countryCode = "id"
-        $.ajax({
-            method: 'POST',
-            url: `${baseUrl}/news`,
-            data: { countryCode }     
-        })
-        .done(response => {
-            getNews(response)
-        })
-        .fail(err => {
-            console.log(err)
-        })
-        .always(() => {
-            console.log("always RUN")
-        })
+    checkAuth()
+ });
+///check auth
+ function checkAuth(){
+    if(localStorage.access_token) {
+        $('.bg-modal').hide()
+        $('#auth-btn').hide()
+        $('#logout-btn').show()
+    }else{
+        $('#auth-btn').show()
+        $('#logout-btn').hide()
     }
+}
+// memunculkan form signin/signup
+ $('#auth-btn').click(function(){
+     $('.bg-modal').show()
+ })
+// menutup form signin/signup
+ $('.close-btn').click(function(){
+    $('.bg-modal').hide()
+ })
 
-    $("#search-btn").click(function(event){
-        event.preventDefault()
-        countryCode = $('#country').val()
-        console.log(countryCode)
-        $.ajax({
-            method: 'POST',
-            url: `${baseUrl}/news`,
-            data: { countryCode }     
-        })
-        .done(response => {
-           getNews(response)
-        })
-        .fail(err => {
-            console.log(err)
-        })
-        .always(() => {
-            console.log("always RUN")
-        })
+ /// sign up
+ $('#signup-btn').click(function(event) {
+    event.preventDefault()
+    const email = $('#regemail').val()
+    const password = $('#regpassword').val()
+    console.log({email,password})
+
+    $.ajax({
+        method: 'POST',
+        url: `${baseUrl}/register`,
+        data: {
+            email: email,
+            password: password,
+        }
     })
+    .done(response => {
+        console.log(response)
+        $('#signIn').show()
+    })
+    .fail(err => {
+        console.log(err)
+    })
+    .always(() => {
+        console.log('always')
+        $('#regemail').val('')
+        $('#regpassword').val('')
+        $('#regusername').val('')
+    })
+})
+//signIn
+$('#signin-btn').click(function(event) {
+    event.preventDefault()
+    const email = $('#email').val()
+    const password = $('#password').val()
+    console.log({password,email})
 
-    $("#hello").click(function(event){
-        event.preventDefault()
-        console.log("MASUK")
-        $(".mycarousel").hide()
+    $.ajax({
+        method: 'POST',
+        url: `${baseUrl}/login`,
+        data: {
+            email: email,
+            password: password,
+        }
+    })
+    .done(response => {
+        console.log(response)
+        localStorage.setItem('access_token',response.access_token)
+        checkAuth()
+    })
+    .fail(err => {
+        console.log(err)
+    })
+    .always(() => {
+        console.log('always')
+        $('#email').val('')
+        $('#password').val('')
     })
 })
 
-function getNews(response){
-    newsList = response.articles
-    let count = 0
-    $("#news-list").empty()
-    $("#best-carousel").empty()
-    newsList.forEach(el => {
-        count++
-        if(el.urlToImage){
-            $('#news-list').append(`<div class="col-4 d-flex align-items-stretch">
-            <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 25rem;">
-            <img src="${el.urlToImage}" class="card-img-top">
-            <div class="card-body align-items-stretch">
-                <h5 class="card-title judul">${el.title}</h5><hr>
-                <p class="card-text">${el.description}</p>
-                <a href="${el.url}" class="btn btn-dark">Read More</a>
-            </div>
-            </div>
-            </div>`)
-            
-            if(count <= 8 && count !== 1){
-            $('#best-carousel').append(`<div class="carousel-item" data-interval="3000">
-            <a href="${el.url}"><img src="${el.urlToImage}" class="d-block mycarousel mx-auto"></a>
-            <div class="carousel-caption d-none d-md-block">
-                <h5 class="carousel-text">${el.title}</h5>
-                <p class="carousel-text">${el.description}</p>
-            </div>
-            </div>`)
-            } else if (count === 1){
-            $('#best-carousel').append(`<div class="carousel-item active" data-interval="3000">
-            <a href="${el.url}"><img src="${el.urlToImage}" class="d-block mycarousel mx-auto"></a>
-            <div class="carousel-caption d-none d-md-block">
-                <h5 class="carousel-text">${el.title}</h5>
-                <p class="carousel-text">${el.description}</p>
-            </div>
-            </div>`)
-            }
-        }
-    })
-}
+$('#logout-btn').click(function(event){
+    event.preventDefault()
+    localStorage.clear()
+    checkAuth()
+})
