@@ -14,6 +14,6 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(router)
-app.use(errorHandlers)
+// app.use(errorHandlers)
 
 app.listen(port, () => console.log('listen on port,', port))

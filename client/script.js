@@ -86,5 +86,3 @@ $('#logout-btn').click(function(event){
     localStorage.clear()
     checkAuth()
 })
-
-
