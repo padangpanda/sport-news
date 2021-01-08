@@ -1,6 +1,7 @@
 var baseUrl = 'http://localhost:3000'
 let newsList = []
 let weather = []
+let time = []
 let countryCode = ''
 
 $(document).ready(function(){
@@ -34,6 +35,7 @@ $(document).ready(function(){
                     console.log("HAAAAAAY")
                     getNews(response)
                     getWeather(response)
+                    getTime(response)
                 })
                 .fail(err => {
                     console.log("GAGAL")
@@ -184,6 +186,26 @@ function getWeather(response){
         <td>${weather.location.name}</td>
         <td>${weather.current.temperature}</td>
         <td>${weather.current.weather_descriptions}</td>
+        </tr>
+    </tbody>
+    </table>`)
+}
+
+function getTime(response){
+    $("#time").empty()
+    time = response.contentTime
+    $('#time').append(`<h3> Timezone </h3>
+    <table class="table table-bordered" style="text-align: center;">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">Abreviation</th>
+        <th scope="col">Timezone</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>${time.abbreviation}</td>
+        <td>${time.timezone}</td>
         </tr>
     </tbody>
     </table>`)
