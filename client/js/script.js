@@ -199,7 +199,7 @@ function getTime(response){
     <thead class="thead-dark">
         <tr>
         <th scope="col">Abreviation</th>
-        <th scope="col">Temperature</th>
+        <th scope="col">Timezone</th>
         </tr>
     </thead>
     <tbody>
