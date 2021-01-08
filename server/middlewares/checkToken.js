@@ -4,6 +4,7 @@ const { User } = require('../models')
 const authenticate = async (req, res, next) => {
   try {
     let decoded = checkToken(req.headers.access_token)
+    console.log(decoded)
     let find = await User.findOne({ where: { email: decoded.email}})
     if (!find) {
       return res.status(401).json({ message: 'Please Login First' })
