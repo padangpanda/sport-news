@@ -1,5 +1,6 @@
 var baseUrl = 'http://localhost:3000'
 let newsList = []
+let weather = []
 let countryCode = ''
 
 $(document).ready(function(){
@@ -23,12 +24,16 @@ $(document).ready(function(){
                 $.ajax({
                     method: 'POST',
                     url: `${baseUrl}/news`,
-                    data: { countryCode}     
+                    data: { countryCode},
+                    headers: {
+                        access_token: localStorage.access_token
+                    }     
                 })
                 .done(response => {
                     console.log(response)
                     console.log("HAAAAAAY")
                     getNews(response)
+                    getWeather(response)
                 })
                 .fail(err => {
                     console.log("GAGAL")
@@ -162,6 +167,28 @@ $('#auth-btn').click(function(){
     })
 })
 
+function getWeather(response){
+    $("#weather").empty()
+    weather = response.contentWeather
+    $('#weather').append(`<h3> Cuaca Hari Ini </h3>
+    <table class="table table-bordered" style="text-align: center;">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">Location</th>
+        <th scope="col">Temperature</th>
+        <th scope="col">Condition</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>${weather.location.name}</td>
+        <td>${weather.current.temperature}</td>
+        <td>${weather.current.weather_descriptions}</td>
+        </tr>
+    </tbody>
+    </table>`)
+}
+
 function getNews(response){
     newsList = response.contentNews
     console.log(newsList, ">>>>>")
@@ -200,6 +227,8 @@ function getNews(response){
             </div>`)
             }
         }
+
+        
     })
 }
 
