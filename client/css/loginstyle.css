@@ -5,6 +5,7 @@
   position: absolute;
   top: 0;
   display: none;
+  z-index: 3;
 }
 .close-btn {
   position: absolute;
@@ -104,10 +105,10 @@
   background: rgba(129, 128, 128, 0.1);
 }
 
-.login-space .group input[data-type="password"] {
+/* .login-space .group input[data-type="password"] {
   text-security: circle;
   -webkit-text-security: circle;
-}
+} */
 
 .login-space .group .label {
   color: #aaa;
