@@ -22,7 +22,7 @@ class ApiController {
             case 'it':
                 timeUrl = 'http://worldtimeapi.org/api/timezone/Europe/Rome'
                 break;
-            case '':
+            case 'jp':
                 timeUrl = 'http://worldtimeapi.org/api/timezone/Asia/Tokyo'
                 break;
             default:
